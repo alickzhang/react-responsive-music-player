@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import './MusicPlayer.scss'
+import './MusicPlayer.css'
 
 class MusicPlayer extends Component {
   render() {
     return (
-      <div></div>
+      <div>
+        <div className="progress-bar">
+          <div className="progress" style={{width: "50%", background: "#ff6666"}}></div>
+        </div>
+      </div>
     )
   }
 }
