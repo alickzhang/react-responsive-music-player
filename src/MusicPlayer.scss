@@ -1,3 +1,13 @@
+@import '~normalize.css/normalize.css';
+
+.row {
+  display: flex;
+}
+
+.player-container {
+  @extend .row;
+}
+
 .progress-bar {
   display: inline-block;
   width: 100%;
@@ -8,4 +18,8 @@
   .progress {
     height: 3px;
   }
+}
+
+.cover {
+
 }
