@@ -3,21 +3,58 @@ import PropTypes from 'prop-types'
 import './MusicPlayer.css'
 
 class MusicPlayer extends Component {
+  constructor() {
+    super()
+    this.state = {
+      activeMusicIndex: 0,
+      leftTime: '00:00',
+      progress: 0,
+      repeat: false,
+    }
+  }
   componentDidMount() {
-    console.log("did mount")
+    const audioContainer = this.audioContainer
+    audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this))
   }
 
   componentWillUnmount() {
-    console.log("will unmount")
+    const audioContainer = this.audioContainer
+    audioContainer.removeEventListener('timeupdate', this.updateProgress.bind(this))
+  }
+
+  adjustProgress(e) {
+    const progressContainer = this.progressContainer
+    const progress = (e.clientX - progressContainer.getBoundingClientRect().left) / progressContainer.clientWidth
+    const currentTime = this.audioContainer.duration * progress
+    this.audioContainer.currentTime = currentTime
+    this.setState({
+      progress: progress
+    })
+  }
+
+  updateProgress() {
+    const duration = this.audioContainer.duration
+    const currentTime = this.audioContainer.currentTime
+    const progress = currentTime / duration
+    this.setState({
+      progress: progress,
+      leftTime: this.formatTime(duration - currentTime)
+    })
+  }
+
+  formatTime(time) {
+    const mins = Math.floor(time / 60)
+    const secs = (time % 60).toFixed()
+    return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`
   }
 
   render() {
     return (
-      <div className="player-container">
+      <div className="player-container" style={this.props.style}>
         <audio
-          autoPlay={this.props.autoPlay}
+          autoPlay={this.props.autoplay}
           className="audio"
-          ref={(ref) => { this.audioRef = ref }}
+          ref={(ref) => { this.audioContainer = ref }}
           src="http://res.cloudinary.com/alick/video/upload/v1502375674/Bedtime_Stories.mp3"
         />
         <div>
@@ -26,11 +63,15 @@ class MusicPlayer extends Component {
             <h3 className="artist">Jay Chou</h3>
           </div>
           <div className="row">
-            <div className="left-time">-1:30</div>
-            <div className="volume-container">abc</div>
+            <div className="left-time">-{this.state.leftTime}</div>
+            <div className="volume-container"></div>
           </div>
-          <div className="progress-bar">
-            <div className="progress" style={{width: "50%", background: "#ff6666"}}></div>
+          <div
+            className="progress-container"
+            onClick={this.adjustProgress.bind(this)}
+            ref={(ref) => { this.progressContainer = ref }}
+          >
+            <div className="progress" style={{width: `${this.state.progress * 100}%`, background: this.props.themeColor}}></div>
           </div>
         </div>
         <div className="cover">
@@ -41,9 +82,16 @@ class MusicPlayer extends Component {
   }
 }
 
+MusicPlayer.defaultProps = {
+  autoplay: false,
+  themeColor: '#66cccc'
+}
+
 MusicPlayer.propTypes = {
   autoplay: PropTypes.bool,
-  playlist: PropTypes.array.isRequired
+  themeColor: PropTypes.string,
+  playlist: PropTypes.array.isRequired,
+  style: PropTypes.object
 }
 
 export default MusicPlayer

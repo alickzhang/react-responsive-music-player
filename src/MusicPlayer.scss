@@ -1,25 +1,44 @@
 @import '~normalize.css/normalize.css';
 
+$font-light-grey: #9b9b9b;
+
+$player-time-color: $font-light-grey !default;
+$player-progress-bg-color: #dadada !default;
+$player-progress-height: 1px !default;
+
+* {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,PingFang SC,Source Han Sans CN,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .row {
   display: flex;
 }
 
 .player-container {
   @extend .row;
-}
 
-.progress-bar {
-  display: inline-block;
-  width: 100%;
-  height: 3px;
-  background-color: #ddd;
-  cursor: pointer;
-
-  .progress {
-    height: 3px;
+  .left-time {
+    color: $player-time-color;
+    font-weight: 400;
+    display: inline-block;
   }
-}
 
-.cover {
+  .progress-container {
+    display: inline-block;
+    width: 100%;
+    height: $player-progress-height;
+    background-color: $player-progress-bg-color;
+    cursor: pointer;
 
+    .progress {
+      height: $player-progress-height;
+    }
+  }
+
+  .cover {
+
+  }
 }
