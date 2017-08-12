@@ -13,6 +13,9 @@ $player-time-width: 50px !default;
 $player-time-height: 20px !default;
 $player-artist-color: #4a4a4a !default;
 $player-time-color: #9b9b9b !default;
+$player-volume-width: 50px !default;
+$player-volume-height: 2px !default;
+$player-volume-bg-color: #e5e5e5 !default;
 $player-progress-bg-color: #dadada !default;
 $player-progress-height: 1px !default;
 $player-control-width: 120px !default;
@@ -81,8 +84,33 @@ $player-cover-height: $player-cover-width;
         display: inline-block;
       }
 
-      .volume-container i {
-        color: $player-time-color;
+      .volume-container {
+        @extend .row;
+
+        .volume-icon i {
+          color: $player-time-color;
+        }
+
+        .volume-wrapper {
+          width: $player-volume-width;
+          padding-left: 2px;
+          opacity: 0;
+          transition: opacity .5s linear;
+
+          .progress-container {
+            height: $player-volume-height;
+            margin-top: 7px;
+            background-color: $player-volume-bg-color;
+
+            .progress {
+              height: $player-volume-height;
+            }
+          }
+        }
+
+        &:hover .volume-wrapper {
+          opacity: 1;
+        }
       }
     }
 
@@ -94,6 +122,7 @@ $player-cover-height: $player-cover-width;
 
       .progress {
         height: $player-progress-height;
+        background-color: $player-time-color;
       }
     }
 

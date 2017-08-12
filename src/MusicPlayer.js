@@ -11,6 +11,7 @@ class MusicPlayer extends Component {
       play: this.props.autoplay || false,
       progress: 0,
       repeat: false,
+      volume: 1
     }
   }
 
@@ -46,6 +47,15 @@ class MusicPlayer extends Component {
     this.setState({
       progress: progress,
       leftTime: duration - currentTime
+    })
+  }
+
+  adjustVolume(e) {
+    const volumeContainer = this.volumeContainer
+    const volume = (e.clientX - volumeContainer.getBoundingClientRect().left) / volumeContainer.clientWidth
+    this.audioContainer.volume = volume
+    this.setState({
+      volume: volume
     })
   }
 
@@ -110,7 +120,18 @@ class MusicPlayer extends Component {
           <div className="time-and-volume">
             <div className="left-time">-{this.formatTime(this.state.leftTime)}</div>
             <div className="volume-container">
-              <i className="icon fa fa-volume-up"></i>
+              <div className="volume-icon">
+                <i className="icon fa fa-volume-up"></i>
+              </div>
+              <div className="volume-wrapper">
+                <div
+                  className="progress-container"
+                  onClick={this.adjustVolume.bind(this)}
+                  ref={(ref) => { this.volumeContainer = ref }}
+                >
+                  <div className="progress" style={{width: `${this.state.volume * 100}%`}}></div>
+                </div>
+              </div>
             </div>
           </div>
           <div
