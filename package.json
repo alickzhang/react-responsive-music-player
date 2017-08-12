@@ -10,6 +10,7 @@
     "url": "https://github.com/alickzhang/react-responsive-music-player.git"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "node-sass-chokidar": "0.0.3",
     "normalize.css": "^7.0.0",
     "prop-types": "^15.5.10",

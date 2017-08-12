@@ -3,15 +3,17 @@ import PropTypes from 'prop-types'
 import './MusicPlayer.css'
 
 class MusicPlayer extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      activeMusicIndex: 0,
+      activeMusicIndex: 3,
       leftTime: '00:00',
+      play: this.props.autoplay || false,
       progress: 0,
       repeat: false,
     }
   }
+
   componentDidMount() {
     const audioContainer = this.audioContainer
     audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this))
@@ -28,7 +30,10 @@ class MusicPlayer extends Component {
     const currentTime = this.audioContainer.duration * progress
     this.audioContainer.currentTime = currentTime
     this.setState({
+      play: true,
       progress: progress
+    }, () => {
+      this.audioContainer.play()
     })
   }
 
@@ -42,6 +47,19 @@ class MusicPlayer extends Component {
     })
   }
 
+  toggle() {
+    this.state.play ? this.audioContainer.pause() : this.audioContainer.play()
+    this.setState({ play: !this.state.play })
+  }
+
+  prev() {
+
+  }
+
+  next() {
+
+  }
+
   formatTime(time) {
     const mins = Math.floor(time / 60)
     const secs = (time % 60).toFixed()
@@ -49,18 +67,21 @@ class MusicPlayer extends Component {
   }
 
   render() {
+    const { activeMusicIndex } = this.state
+    const activeMusic = this.props.playlist[activeMusicIndex]
+
     return (
       <div className="player-container" style={this.props.style}>
         <audio
           autoPlay={this.props.autoplay}
           className="audio"
           ref={(ref) => { this.audioContainer = ref }}
-          src="http://res.cloudinary.com/alick/video/upload/v1502375674/Bedtime_Stories.mp3"
+          src={activeMusic.url}
         />
-        <div>
+        <div className="info-and-control">
           <div className="music-info">
-            <h2 className="music-title">Bedtime Stories</h2>
-            <h3 className="artist">Jay Chou</h3>
+            <h2 className="music-title">{activeMusic.title}</h2>
+            <h3 className="artist">{activeMusic.artist}</h3>
           </div>
           <div className="row">
             <div className="left-time">-{this.state.leftTime}</div>
@@ -73,9 +94,14 @@ class MusicPlayer extends Component {
           >
             <div className="progress" style={{width: `${this.state.progress * 100}%`, background: this.props.themeColor}}></div>
           </div>
+          <div className="controls">
+            <i className="icon fa fa-step-backward" onClick={this.prev.bind(this)}></i>
+            <i className={`icon fa fa-${this.state.play ? 'pause' : 'play'}`} onClick={this.toggle.bind(this)}></i>
+            <i className="icon fa fa-step-forward" onClick={this.next.bind(this)}></i>
+          </div>
         </div>
         <div className="cover">
-          <img src="http://res.cloudinary.com/alick/image/upload/v1502375983/cover-sm_se17pg.jpg" alt=""/>
+          <img src={activeMusic.cover} alt="" width={200}/>
         </div>
       </div>
     )

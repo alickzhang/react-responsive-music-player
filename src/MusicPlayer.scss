@@ -1,6 +1,8 @@
 @import '~normalize.css/normalize.css';
+@import '~font-awesome/css/font-awesome.css';
 
-$font-light-grey: #9b9b9b;
+$font-light-grey: #9b9b9b !default;
+$font-dark-grey: #4a4a4a !default;
 
 $player-time-color: $font-light-grey !default;
 $player-progress-bg-color: #dadada !default;
@@ -17,28 +19,54 @@ $player-progress-height: 1px !default;
   display: flex;
 }
 
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon {
+  display: inline-block;
+  cursor: pointer;
+  color: $font-dark-grey;
+}
+
 .player-container {
   @extend .row;
 
-  .left-time {
-    color: $player-time-color;
-    font-weight: 400;
-    display: inline-block;
-  }
+  .info-and-control {
+    width: 600px;
+    @extend .col;
 
-  .progress-container {
-    display: inline-block;
-    width: 100%;
-    height: $player-progress-height;
-    background-color: $player-progress-bg-color;
-    cursor: pointer;
+    .left-time {
+      color: $player-time-color;
+      font-weight: 400;
+      display: inline-block;
+    }
 
-    .progress {
+    .progress-container {
+      width: 100%;
       height: $player-progress-height;
+      background-color: $player-progress-bg-color;
+      cursor: pointer;
+
+      .progress {
+        height: $player-progress-height;
+      }
+    }
+
+    .controls {
+      width: 120px;
+      justify-content: space-between;
+      align-self: flex-end;
+      font-size: 32px;
+      @extend .row;
     }
   }
 
   .cover {
-
+    img {
+      width: 250px;
+      border-radius: 50%;
+    }
   }
 }
