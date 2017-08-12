@@ -80,12 +80,14 @@ class MusicPlayer extends Component {
         />
         <div className="info-and-control">
           <div className="music-info">
-            <h2 className="music-title">{activeMusic.title}</h2>
+            <h2 className="title">{activeMusic.title}</h2>
             <h3 className="artist">{activeMusic.artist}</h3>
           </div>
-          <div className="row">
+          <div className="time-and-volume">
             <div className="left-time">-{this.state.leftTime}</div>
-            <div className="volume-container"></div>
+            <div className="volume-container">
+              <i className="icon fa fa-volume-up"></i>
+            </div>
           </div>
           <div
             className="progress-container"
@@ -100,8 +102,8 @@ class MusicPlayer extends Component {
             <i className="icon fa fa-step-forward" onClick={this.next.bind(this)}></i>
           </div>
         </div>
-        <div className="cover">
-          <img src={activeMusic.cover} alt="" width={200}/>
+        <div className="cover-container">
+          <div className="cover" style={{backgroundImage: `url(${activeMusic.cover})`}}></div>
         </div>
       </div>
     )

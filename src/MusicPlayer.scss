@@ -3,10 +3,19 @@
 
 $font-light-grey: #9b9b9b !default;
 $font-dark-grey: #4a4a4a !default;
+$font-weight: 400 !default;
+$font-size-lg: 1.5em !default;
+$font-size-md: 1.0em !default;
+$font-size-sm: 0.9em !default;
 
+$player-info-height: 100px !default;
 $player-time-color: $font-light-grey !default;
 $player-progress-bg-color: #dadada !default;
 $player-progress-height: 1px !default;
+$player-control-width: 120px !default;
+$player-control-font-size: 32px !default;
+$player-cover-width: 240px !default;
+$player-cover-height: $player-cover-width;
 
 * {
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,PingFang SC,Source Han Sans CN,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
@@ -34,13 +43,43 @@ $player-progress-height: 1px !default;
   @extend .row;
 
   .info-and-control {
-    width: 600px;
+    width: 440px;
+    min-width: 200px;
     @extend .col;
 
-    .left-time {
+    .music-info {
+      height: $player-info-height;
+      .title {
+        margin-bottom: 0;
+        font-size: $font-size-lg;
+        font-weight: $font-weight;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .artist {
+        color: $font-dark-grey;
+        font-size: $font-size-md;
+        font-weight: $font-weight;
+      }
+    }
+
+    .time-and-volume {
+      height: $player-cover-height / 2 - $player-info-height;
       color: $player-time-color;
-      font-weight: 400;
-      display: inline-block;
+      font-size: $font-size-sm;
+      @extend .row;
+
+      .left-time {
+        margin-right: 10px;
+        font-weight: $font-weight;
+        display: inline-block;
+      }
+
+      .volume-container i {
+        color: $player-time-color;
+      }
     }
 
     .progress-container {
@@ -55,18 +94,26 @@ $player-progress-height: 1px !default;
     }
 
     .controls {
-      width: 120px;
+      width: $player-control-width;
+      margin-top: 60px;
       justify-content: space-between;
       align-self: flex-end;
-      font-size: 32px;
+      font-size: $player-control-font-size;
       @extend .row;
     }
   }
 
-  .cover {
-    img {
-      width: 250px;
+  .cover-container {
+    width: $player-cover-width;
+    height: $player-cover-height;
+    margin-left: 40px;
+    overflow: hidden;
+
+    .cover {
+      width: $player-cover-width;
+      height: $player-cover-height;
       border-radius: 50%;
+      background-size: cover;
     }
   }
 }
