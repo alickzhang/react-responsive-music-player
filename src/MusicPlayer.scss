@@ -1,19 +1,22 @@
 @import '~normalize.css/normalize.css';
 @import '~font-awesome/css/font-awesome.css';
 
-$font-light-grey: #9b9b9b !default;
-$font-dark-grey: #4a4a4a !default;
+$icon-color: #4a4a4a !default;
+
 $font-weight: 400 !default;
 $font-size-lg: 1.5em !default;
 $font-size-md: 1.0em !default;
 $font-size-sm: 0.9em !default;
 
 $player-info-height: 100px !default;
-$player-time-color: $font-light-grey !default;
+$player-time-width: 50px !default;
+$player-time-height: 20px !default;
+$player-artist-color: #4a4a4a !default;
+$player-time-color: #9b9b9b !default;
 $player-progress-bg-color: #dadada !default;
 $player-progress-height: 1px !default;
 $player-control-width: 120px !default;
-$player-control-font-size: 32px !default;
+$player-control-font-size: 28px !default;
 $player-cover-width: 240px !default;
 $player-cover-height: $player-cover-width;
 
@@ -36,7 +39,7 @@ $player-cover-height: $player-cover-width;
 .icon {
   display: inline-block;
   cursor: pointer;
-  color: $font-dark-grey;
+  color: $icon-color;
 }
 
 .player-container {
@@ -59,19 +62,20 @@ $player-cover-height: $player-cover-width;
       }
 
       .artist {
-        color: $font-dark-grey;
+        color: $player-artist-color;
         font-size: $font-size-md;
         font-weight: $font-weight;
       }
     }
 
     .time-and-volume {
-      height: $player-cover-height / 2 - $player-info-height;
+      height: $player-time-height;
       color: $player-time-color;
       font-size: $font-size-sm;
       @extend .row;
 
       .left-time {
+        width: $player-time-width;
         margin-right: 10px;
         font-weight: $font-weight;
         display: inline-block;

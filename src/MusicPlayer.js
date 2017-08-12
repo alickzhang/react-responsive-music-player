@@ -6,8 +6,8 @@ class MusicPlayer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeMusicIndex: 3,
-      leftTime: '00:00',
+      activeMusicIndex: 0,
+      leftTime: 0,
       play: this.props.autoplay || false,
       progress: 0,
       repeat: false,
@@ -17,11 +17,13 @@ class MusicPlayer extends Component {
   componentDidMount() {
     const audioContainer = this.audioContainer
     audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this))
+    audioContainer.addEventListener('ended', this.end.bind(this))
   }
 
   componentWillUnmount() {
     const audioContainer = this.audioContainer
     audioContainer.removeEventListener('timeupdate', this.updateProgress.bind(this))
+    audioContainer.removeEventListnere('ended', this.end.bind(this))
   }
 
   adjustProgress(e) {
@@ -43,7 +45,7 @@ class MusicPlayer extends Component {
     const progress = currentTime / duration
     this.setState({
       progress: progress,
-      leftTime: this.formatTime(duration - currentTime)
+      leftTime: duration - currentTime
     })
   }
 
@@ -52,15 +54,37 @@ class MusicPlayer extends Component {
     this.setState({ play: !this.state.play })
   }
 
-  prev() {
+  end() {
+    this.state.repeat ? this.audioContainer.play() : this.setState({ play: false })
+  }
 
+  playMusic(index) {
+    this.setState({
+      activeMusicIndex: index,
+      leftTime: 0,
+      play: true,
+      progress: 0
+    }, () => {
+      this.audioContainer.play()
+    })
+  }
+
+  prev() {
+    const total = this.props.playlist.length
+    const activeMusicIndex = this.state.activeMusicIndex > 0 ? this.state.activeMusicIndex - 1 : total - 1
+    this.playMusic(activeMusicIndex)
   }
 
   next() {
-
+    const total = this.props.playlist.length
+    const activeMusicIndex = this.state.activeMusicIndex < total - 1 ? this.state.activeMusicIndex + 1 : 0
+    this.playMusic(activeMusicIndex)
   }
 
   formatTime(time) {
+    if (isNaN(time)) {
+      return
+    }
     const mins = Math.floor(time / 60)
     const secs = (time % 60).toFixed()
     return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`
@@ -73,8 +97,8 @@ class MusicPlayer extends Component {
     return (
       <div className="player-container" style={this.props.style}>
         <audio
-          autoPlay={this.props.autoplay}
-          className="audio"
+          autoPlay={this.state.play}
+          preload="auto"
           ref={(ref) => { this.audioContainer = ref }}
           src={activeMusic.url}
         />
@@ -84,7 +108,7 @@ class MusicPlayer extends Component {
             <h3 className="artist">{activeMusic.artist}</h3>
           </div>
           <div className="time-and-volume">
-            <div className="left-time">-{this.state.leftTime}</div>
+            <div className="left-time">-{this.formatTime(this.state.leftTime)}</div>
             <div className="volume-container">
               <i className="icon fa fa-volume-up"></i>
             </div>
@@ -112,7 +136,9 @@ class MusicPlayer extends Component {
 
 MusicPlayer.defaultProps = {
   autoplay: false,
-  themeColor: '#66cccc'
+  themeColor: '#66cccc',
+  playlist: [],
+  style: {}
 }
 
 MusicPlayer.propTypes = {
