@@ -52,7 +52,8 @@ class MusicPlayer extends Component {
 
   adjustVolume(e) {
     const volumeContainer = this.volumeContainer
-    const volume = (e.clientX - volumeContainer.getBoundingClientRect().left) / volumeContainer.clientWidth
+    let volume = (e.clientX - volumeContainer.getBoundingClientRect().left) / volumeContainer.clientWidth
+    volume = volume < 0 ? 0 : volume
     this.audioContainer.volume = volume
     this.setState({
       volume: volume
@@ -65,7 +66,7 @@ class MusicPlayer extends Component {
   }
 
   end() {
-    this.state.repeat ? this.audioContainer.play() : this.setState({ play: false })
+    this.state.repeat ? this.audioContainer.play() : this.props.autoplay ? this.next() : this.setState({ play: false })
   }
 
   playMusic(index) {
@@ -91,8 +92,12 @@ class MusicPlayer extends Component {
     this.playMusic(activeMusicIndex)
   }
 
+  changePlayMode() {
+
+  }
+
   formatTime(time) {
-    if (isNaN(time)) {
+    if (isNaN(time) || time === 0) {
       return
     }
     const mins = Math.floor(time / 60)
@@ -141,10 +146,15 @@ class MusicPlayer extends Component {
           >
             <div className="progress" style={{width: `${this.state.progress * 100}%`, background: this.props.themeColor}}></div>
           </div>
-          <div className="controls">
-            <i className="icon fa fa-step-backward" onClick={this.prev.bind(this)}></i>
-            <i className={`icon fa fa-${this.state.play ? 'pause' : 'play'}`} onClick={this.toggle.bind(this)}></i>
-            <i className="icon fa fa-step-forward" onClick={this.next.bind(this)}></i>
+          <div className="control-container">
+            <div className="mode-control">
+              <i className="icon fa fa-random" onClick={this.changePlayMode.bind(this)}></i>
+            </div>
+            <div className="controls">
+              <i className="icon fa fa-step-backward" onClick={this.prev.bind(this)}></i>
+              <i className={`icon fa fa-${this.state.play ? 'pause' : 'play'}`} onClick={this.toggle.bind(this)}></i>
+              <i className="icon fa fa-step-forward" onClick={this.next.bind(this)}></i>
+            </div>
           </div>
         </div>
         <div className="cover-container">

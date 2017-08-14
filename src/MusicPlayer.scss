@@ -6,11 +6,14 @@ $icon-color: #4a4a4a !default;
 $font-weight: 400 !default;
 $font-size-lg: 1.5em !default;
 $font-size-md: 1.0em !default;
-$font-size-sm: 0.9em !default;
+$font-size-sm: 0.8em !default;
 
-$player-info-height: 100px !default;
-$player-time-width: 50px !default;
-$player-time-height: 20px !default;
+$player-info-width-lg: 430px;
+$player-info-width-md: 296px;
+
+$player-time-width: 3.2em !default;
+$player-time-height: 1.6em !default;
+$player-title-color: #030303 !default;
 $player-artist-color: #4a4a4a !default;
 $player-time-color: #9b9b9b !default;
 $player-volume-width: 50px !default;
@@ -18,8 +21,8 @@ $player-volume-height: 2px !default;
 $player-volume-bg-color: #e5e5e5 !default;
 $player-progress-bg-color: #dadada !default;
 $player-progress-height: 1px !default;
-$player-control-width: 120px !default;
-$player-control-font-size: 28px !default;
+$player-control-width: 240px !default;
+$player-control-font-size: 1.8em !default;
 $player-cover-width: 240px !default;
 $player-cover-height: $player-cover-width;
 
@@ -30,62 +33,70 @@ $player-cover-height: $player-cover-width;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.row {
+%row {
   display: flex;
 }
 
-.col {
+%col {
   display: flex;
   flex-direction: column;
 }
 
+.hide {
+  display: none;
+}
+
 .icon {
-  display: inline-block;
   cursor: pointer;
   color: $icon-color;
 }
 
 .player-container {
-  @extend .row;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  @extend %row;
 
   .info-and-control {
-    width: 440px;
-    min-width: 200px;
-    @extend .col;
+    width: 100%;
+    @extend %col;
 
     .music-info {
-      height: $player-info-height;
-      .title {
-        margin-bottom: 0;
-        font-size: $font-size-lg;
+      text-align: center;
+
+      .title, .artist {
         font-weight: $font-weight;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
       }
 
+      .title {
+        margin-bottom: 0;
+        color: $player-title-color;
+        font-size: $font-size-lg;
+      }
+
       .artist {
         color: $player-artist-color;
         font-size: $font-size-md;
-        font-weight: $font-weight;
       }
     }
 
     .time-and-volume {
       height: $player-time-height;
+      line-height: $player-time-height;
       color: $player-time-color;
       font-size: $font-size-sm;
-      @extend .row;
+      @extend %row;
 
       .left-time {
         width: $player-time-width;
         margin-right: 10px;
         font-weight: $font-weight;
-        display: inline-block;
       }
 
       .volume-container {
-        @extend .row;
+        @extend .hide;
 
         .volume-icon i {
           color: $player-time-color;
@@ -99,7 +110,7 @@ $player-cover-height: $player-cover-width;
 
           .progress-container {
             height: $player-volume-height;
-            margin-top: 7px;
+            margin-top: calc(0.8em - 1px);
             background-color: $player-volume-bg-color;
 
             .progress {
@@ -116,30 +127,41 @@ $player-cover-height: $player-cover-width;
 
     .progress-container {
       width: 100%;
-      height: $player-progress-height;
+      height: 3px;
       background-color: $player-progress-bg-color;
       cursor: pointer;
 
       .progress {
-        height: $player-progress-height;
+        height: 100%;
         background-color: $player-time-color;
       }
     }
 
-    .controls {
-      width: $player-control-width;
-      margin-top: 60px;
-      justify-content: space-between;
-      align-self: flex-end;
+    .control-container {
+      position: relative;
+      width: 100%;
+      margin-top: 1.3em;
+      justify-content: center;
       font-size: $player-control-font-size;
-      @extend .row;
+      @extend %row;
+
+      .mode-control {
+        position: absolute;
+        left: 0;
+        @extend %row;
+      }
+
+      .controls {
+        width: $player-control-width;
+        justify-content: space-around;
+        @extend %row;
+      }
     }
   }
 
   .cover-container {
     width: $player-cover-width;
     height: $player-cover-height;
-    margin-left: 40px;
     overflow: hidden;
 
     .cover {
@@ -147,6 +169,59 @@ $player-cover-height: $player-cover-width;
       height: $player-cover-height;
       border-radius: 50%;
       background-size: cover;
+    }
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .player-container {
+
+    .info-and-control {
+      width: $player-info-width-md;
+
+      .music-info {
+        text-align: start;
+      }
+
+      .time-and-volume {
+        .volume-container {
+          display: flex;
+        }
+      }
+
+      .progress-container {
+        height: $player-progress-height;
+
+        .progress {
+          height: 100%;
+        }
+      }
+
+      .control-container {
+        justify-content: space-between;
+
+        .mode-control {
+          position: relative;
+        }
+
+        .controls {
+          width: $player-control-width / 2;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    .cover-container {
+      margin-left: 40px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .player-container {
+
+    .info-and-control {
+      width: $player-info-width-lg;
     }
   }
 }
