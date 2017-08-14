@@ -41,7 +41,7 @@ themeColor | string | #66cccc | the theme color of your app
 
 ### JSON
 
-``` json
+```
 const playlist = [
   {
     url: 'path/to/mp3',
