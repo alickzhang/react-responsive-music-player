@@ -1,18 +1,26 @@
 {
   "name": "react-responsive-music-player",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A responsive music player built with React",
-  "main": "src/MusicPlayer.js",
+  "main": "dist/MusicPlayer.js",
   "author": "Alick Zhang",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/alickzhang/react-responsive-music-player.git"
   },
+  "bugs": {
+    "url": "https://github.com/alickzhang/react-responsive-music-player/issues"
+  },
   "dependencies": {
+    "autoprefixer": "^7.1.2",
+    "babel-cli": "^6.24.1",
+    "babel-preset-react-app": "^3.0.2",
+    "cssnano": "^3.10.0",
     "font-awesome": "^4.7.0",
     "node-sass-chokidar": "0.0.3",
     "normalize.css": "^7.0.0",
+    "postcss-cli": "^4.1.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -24,6 +32,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "compile": "npm run build-css && npm run compile:js && npm run compile:css",
+    "compile:js": "rimraf dist && NODE_ENV=production babel src/ -d dist/ --presets react-app",
+    "compile:css": "postcss --use autoprefixer --use cssnano -o dist/MusicPlayer.css src/MusicPlayer.css"
   }
 }
