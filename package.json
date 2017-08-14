@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "A responsive music player built with React",
   "main": "src/MusicPlayer.js",
-  "private": true,
   "author": "Alick Zhang",
   "license": "MIT",
   "repository": {
