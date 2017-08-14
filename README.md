@@ -2,7 +2,7 @@
 
 ## Example
 
-Please see a demo here(http://alickzhang.github.io/react-responsive-music-player/)
+Please see a [demo](http://alickzhang.github.io/react-responsive-music-player/).
 
 ## Install
 

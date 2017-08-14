@@ -40,11 +40,11 @@ const playlist = [
   {
     url: 'http://res.cloudinary.com/alick/video/upload/v1502444222/Goodbye_byaom5.mp3',
     cover: 'http://res.cloudinary.com/alick/image/upload/v1502444310/Goodbye_hpubmk.jpg',
-    title: 'Goodbye by G.E.M Deng Ziqi',
+    title: 'Goodbye',
     artist: [
       'G.E.M.'
     ]
   }
 ]
 
-ReactDOM.render(<MusicPlayer playlist={playlist} />, document.getElementById('root'))
+ReactDOM.render(<MusicPlayer playlist={playlist} autoplay />, document.getElementById('root'))

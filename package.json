@@ -38,7 +38,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "compile": "npm run build-css && npm run compile:js && npm run compile:css",
-    "compile:js": "rimraf dist && NODE_ENV=production babel src/ -d dist/ --presets react-app",
+    "compile:js": "rimraf dist && NODE_ENV=production babel src/ -d dist/ --presets react-app --ignore src/index.js",
     "compile:css": "postcss --use autoprefixer --use cssnano -o dist/MusicPlayer.css src/MusicPlayer.css"
   }
 }
