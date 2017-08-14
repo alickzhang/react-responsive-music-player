@@ -9,6 +9,7 @@
     "type": "git",
     "url": "https://github.com/alickzhang/react-responsive-music-player.git"
   },
+  "homepage": "http://alickzhang.github.io/react-responsive-music-player",
   "bugs": {
     "url": "https://github.com/alickzhang/react-responsive-music-player/issues"
   },
@@ -18,6 +19,7 @@
     "babel-preset-react-app": "^3.0.2",
     "cssnano": "^3.10.0",
     "font-awesome": "^4.7.0",
+    "gh-pages": "^1.0.0",
     "node-sass-chokidar": "0.0.3",
     "normalize.css": "^7.0.0",
     "postcss-cli": "^4.1.0",
@@ -29,6 +31,8 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
