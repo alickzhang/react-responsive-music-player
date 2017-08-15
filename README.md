@@ -39,9 +39,9 @@ class App extends Component {
 prop       | type   | default | notes
 -----------|--------|---------|--------
 autoplay   | bool   | false   |
-playlist   | object | []      | the playlist
+playlist   | array  | []      | the playlist
 style      | object | {}      |
-themeColor | string | #66cccc | the theme color of your app
+themeColor | string | #66cccc | the theme color of the player
 
 ### JSON
 
