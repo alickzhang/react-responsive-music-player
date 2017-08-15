@@ -72,4 +72,6 @@ npm start
 
 ## License
 
-MIT
+MIT License
+
+Copyright (c) 2017 Shixiang Zhang
