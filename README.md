@@ -4,8 +4,8 @@
 
 Please see a [demo](http://alickzhang.github.io/react-responsive-music-player/).
 
-![](http://res.cloudinary.com/alick/image/upload/v1502761479/screenshopt_mem5hg.png)
-![](http://res.cloudinary.com/alick/image/upload/v1502761993/screenshot-iphone_p9mmv8.png)
+![](http://res.cloudinary.com/alick/image/upload/v1502761479/screenshot_mem5hg.png)
+![](http://res.cloudinary.com/alick/image/upload/v1502763028/screenshot_uhqb7f.png)
 
 ## Install
 
