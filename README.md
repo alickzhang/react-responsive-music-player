@@ -4,6 +4,9 @@
 
 Please see a [demo](http://alickzhang.github.io/react-responsive-music-player/).
 
+![](http://res.cloudinary.com/alick/image/upload/v1502761479/screenshopt_mem5hg.png)
+![](http://res.cloudinary.com/alick/image/upload/v1502761477/screenshopt-iphone_xsz6ny.png)
+
 ## Install
 
 ``` bash
@@ -13,6 +16,7 @@ npm install react-responsive-music-player --save
 ## Usage
 
 ``` jsx
+import React, { Component } from 'react'
 import MusicPlayer from 'react-responsive-music-player'
 
 class App extends Component {
