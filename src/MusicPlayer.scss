@@ -1,8 +1,6 @@
 @import '~normalize.css/normalize.css';
 @import '~font-awesome/css/font-awesome.css';
 
-$icon-color: #4a4a4a !default;
-
 $font-weight: 400 !default;
 $font-size-lg: 1.5em !default;
 $font-size-md: 1.0em !default;
@@ -48,7 +46,6 @@ $player-cover-height: $player-cover-width;
 
 .icon {
   cursor: pointer;
-  color: $icon-color;
 }
 
 .player-container {

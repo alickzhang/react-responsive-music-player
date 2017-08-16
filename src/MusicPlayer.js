@@ -6,16 +6,18 @@ class MusicPlayer extends Component {
 
   static propTypes = {
     autoplay: PropTypes.bool,
+    color: PropTypes.string,
+    btnColor: PropTypes.string,
     playlist: PropTypes.array.isRequired,
     style: PropTypes.object,
-    themeColor: PropTypes.string
   };
 
   static defaultProps = {
     autoplay: false,
+    color: '#66cccc',
+    btnColor: '#4a4a4a',
     playlist: [],
     style: {},
-    themeColor: '#66cccc'
   }
 
   constructor(props) {
@@ -141,9 +143,11 @@ class MusicPlayer extends Component {
   }
 
   render() {
+    const { color, btnColor, playlist } = this.props
     const { activeMusicIndex, playMode } = this.state
-    const activeMusic = this.props.playlist[activeMusicIndex]
+    const activeMusic = playlist[activeMusicIndex]
     const playModeClass = playMode === 'loop' ? 'refresh' : playMode === 'random' ? 'random' : 'repeat'
+    const btnStyle = {color: btnColor}
 
     return (
       <div className="player-container" style={this.props.style}>
@@ -180,16 +184,16 @@ class MusicPlayer extends Component {
             onClick={this.handleAdjustProgress.bind(this)}
             ref={(ref) => { this.progressContainer = ref }}
           >
-            <div className="progress" style={{width: `${this.state.progress * 100}%`, background: this.props.themeColor}}></div>
+            <div className="progress" style={{width: `${this.state.progress * 100}%`, background: this.props.color}}></div>
           </div>
           <div className="control-container">
             <div className="mode-control">
-              <i className={`icon fa fa-${playModeClass}`} onClick={this.handleChangePlayMode.bind(this)}></i>
+              <i className={`icon fa fa-${playModeClass}`} style={btnStyle} onClick={this.handleChangePlayMode.bind(this)}></i>
             </div>
             <div className="controls">
-              <i className="icon fa fa-step-backward" onClick={this.handlePrev.bind(this)}></i>
-              <i className={`icon fa fa-${this.state.play ? 'pause' : 'play'}`} onClick={this.handleToggle.bind(this)}></i>
-              <i className="icon fa fa-step-forward" onClick={this.handleNext.bind(this)}></i>
+              <i className="icon fa fa-step-backward" style={btnStyle} onClick={this.handlePrev.bind(this)}></i>
+              <i className={`icon fa fa-${this.state.play ? 'pause' : 'play'}`} style={btnStyle} onClick={this.handleToggle.bind(this)}></i>
+              <i className="icon fa fa-step-forward" style={btnStyle} onClick={this.handleNext.bind(this)}></i>
             </div>
           </div>
         </div>
