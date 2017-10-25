@@ -42,7 +42,7 @@ class MusicPlayer extends Component {
   componentWillUnmount() {
     const audioContainer = this.audioContainer
     audioContainer.removeEventListener('timeupdate', this.updateProgress.bind(this))
-    audioContainer.removeEventListnere('ended', this.end.bind(this))
+    audioContainer.removeEventListener('ended', this.end.bind(this))
   }
 
   updateProgress() {
