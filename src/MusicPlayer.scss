@@ -113,6 +113,7 @@ $player-cover-height: $player-cover-width;
 
             .progress {
               height: $player-volume-height;
+              background-color: $player-time-color;
             }
           }
         }
@@ -131,7 +132,6 @@ $player-cover-height: $player-cover-width;
 
       .progress {
         height: 100%;
-        background-color: $player-time-color;
       }
     }
 

@@ -36,13 +36,13 @@ class App extends Component {
 
 ### props
 
-prop       | type   | default | notes
------------|--------|---------|--------
-autoplay   | bool   | false   |
-color      | string | #66cccc | the theme color of the player
-btnColor   | string | #4a4a4a | the color of the buttons
-playlist   | array  | []      | the playlist
-style      | object | {}      |
+prop          | type   | default | notes
+--------------|--------|---------|--------
+autoplay      | bool   | false   |
+progressColor | string | #66cccc | the color of the progress
+btnColor      | string | #4a4a4a | the color of the buttons
+playlist      | array  | []      | the playlist
+style         | object | {}      |
 
 ### JSON
 

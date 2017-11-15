@@ -6,15 +6,15 @@ class MusicPlayer extends Component {
 
   static propTypes = {
     autoplay: PropTypes.bool,
-    color: PropTypes.string,
+    progressColor: PropTypes.string,
     btnColor: PropTypes.string,
     playlist: PropTypes.array.isRequired,
     style: PropTypes.object,
-  };
+  }
 
   static defaultProps = {
     autoplay: false,
-    color: '#66cccc',
+    progressColor: '#66cccc',
     btnColor: '#4a4a4a',
     playlist: [],
     style: {},
@@ -56,20 +56,7 @@ class MusicPlayer extends Component {
   }
 
   end() {
-    const { playMode, activeMusicIndex } = this.state
-    if (playMode === 'repeat') {
-      this.audioContainer.play()
-    } else if (playMode === 'loop') {
-      this.handleNext()
-    } else if (playMode === 'random') {
-      let randomIndex = Math.floor(Math.random() * this.props.playlist.length)
-      while (randomIndex === activeMusicIndex) {
-        randomIndex = Math.floor(Math.random() * this.props.playlist.length)
-      }
-      this._playMusic(randomIndex)
-    } else {
-      this.setState({ play: false })
-    }
+    this.handleNext()
   }
 
   handleAdjustProgress(e) {
@@ -101,15 +88,41 @@ class MusicPlayer extends Component {
   }
 
   handlePrev() {
-    const total = this.props.playlist.length
-    const activeMusicIndex = this.state.activeMusicIndex > 0 ? this.state.activeMusicIndex - 1 : total - 1
-    this._playMusic(activeMusicIndex)
+    const { playMode, activeMusicIndex } = this.state
+    if (playMode === 'repeat') {
+      this._playMusic(activeMusicIndex)
+    } else if (playMode === 'loop') {
+      const total = this.props.playlist.length
+      const index = activeMusicIndex > 0 ? activeMusicIndex - 1 : total - 1
+      this._playMusic(index)
+    } else if (playMode === 'random') {
+      let randomIndex = Math.floor(Math.random() * this.props.playlist.length)
+      while (randomIndex === activeMusicIndex) {
+        randomIndex = Math.floor(Math.random() * this.props.playlist.length)
+      }
+      this._playMusic(randomIndex)
+    } else {
+      this.setState({ play: false })
+    }
   }
 
   handleNext() {
-    const total = this.props.playlist.length
-    const activeMusicIndex = this.state.activeMusicIndex < total - 1 ? this.state.activeMusicIndex + 1 : 0
-    this._playMusic(activeMusicIndex)
+    const { playMode, activeMusicIndex } = this.state
+    if (playMode === 'repeat') {
+      this._playMusic(activeMusicIndex)
+    } else if (playMode === 'loop') {
+      const total = this.props.playlist.length
+      const index = activeMusicIndex < total - 1 ? activeMusicIndex + 1 : 0
+      this._playMusic(index)
+    } else if (playMode === 'random') {
+      let randomIndex = Math.floor(Math.random() * this.props.playlist.length)
+      while (randomIndex === activeMusicIndex) {
+        randomIndex = Math.floor(Math.random() * this.props.playlist.length)
+      }
+      this._playMusic(randomIndex)
+    } else {
+      this.setState({ play: false })
+    }
   }
 
   handleChangePlayMode() {
@@ -125,6 +138,7 @@ class MusicPlayer extends Component {
       play: true,
       progress: 0
     }, () => {
+      this.audioContainer.currentTime = 0
       this.audioContainer.play()
     })
   }
@@ -143,18 +157,19 @@ class MusicPlayer extends Component {
   }
 
   render() {
-    const { color, btnColor, playlist } = this.props
+    const { progressColor, btnColor, playlist } = this.props
     const { activeMusicIndex, playMode } = this.state
     const activeMusic = playlist[activeMusicIndex]
     const playModeClass = playMode === 'loop' ? 'refresh' : playMode === 'random' ? 'random' : 'repeat'
-    const btnStyle = {color: btnColor}
+    const btnStyle = { color: btnColor }
+    const progressStyle = { width: `${this.state.progress * 100}%`, backgroundColor: progressColor }
 
     return (
       <div className="player-container" style={this.props.style}>
         <audio
           autoPlay={this.state.play}
           preload="auto"
-          ref={(ref) => { this.audioContainer = ref }}
+          ref={ref => { this.audioContainer = ref }}
           src={activeMusic.url}
         />
         <div className="info-and-control">
@@ -172,9 +187,9 @@ class MusicPlayer extends Component {
                 <div
                   className="progress-container"
                   onClick={this.handleAdjustVolume.bind(this)}
-                  ref={(ref) => { this.volumeContainer = ref }}
+                  ref={ref => { this.volumeContainer = ref }}
                 >
-                  <div className="progress" style={{width: `${this.state.volume * 100}%`}}></div>
+                  <div className="progress" style={{ width: `${this.state.volume * 100}%` }}></div>
                 </div>
               </div>
             </div>
@@ -184,7 +199,7 @@ class MusicPlayer extends Component {
             onClick={this.handleAdjustProgress.bind(this)}
             ref={(ref) => { this.progressContainer = ref }}
           >
-            <div className="progress" style={{width: `${this.state.progress * 100}%`, background: this.props.color}}></div>
+            <div className="progress" style={progressStyle}></div>
           </div>
           <div className="control-container">
             <div className="mode-control">
@@ -198,7 +213,7 @@ class MusicPlayer extends Component {
           </div>
         </div>
         <div className="cover-container">
-          <div className="cover" style={{backgroundImage: `url(${activeMusic.cover})`}}></div>
+          <div className="cover" style={{ backgroundImage: `url(${activeMusic.cover})` }}></div>
         </div>
       </div>
     )

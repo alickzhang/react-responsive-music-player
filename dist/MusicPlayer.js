@@ -58,23 +58,7 @@ var MusicPlayer = function (_Component) {
   }, {
     key: 'end',
     value: function end() {
-      var _state = this.state,
-          playMode = _state.playMode,
-          activeMusicIndex = _state.activeMusicIndex;
-
-      if (playMode === 'repeat') {
-        this.audioContainer.play();
-      } else if (playMode === 'loop') {
-        this.handleNext();
-      } else if (playMode === 'random') {
-        var randomIndex = Math.floor(Math.random() * this.props.playlist.length);
-        while (randomIndex === activeMusicIndex) {
-          randomIndex = Math.floor(Math.random() * this.props.playlist.length);
-        }
-        this._playMusic(randomIndex);
-      } else {
-        this.setState({ play: false });
-      }
+      this.handleNext();
     }
   }, {
     key: 'handleAdjustProgress',
@@ -112,16 +96,48 @@ var MusicPlayer = function (_Component) {
   }, {
     key: 'handlePrev',
     value: function handlePrev() {
-      var total = this.props.playlist.length;
-      var activeMusicIndex = this.state.activeMusicIndex > 0 ? this.state.activeMusicIndex - 1 : total - 1;
-      this._playMusic(activeMusicIndex);
+      var _state = this.state,
+          playMode = _state.playMode,
+          activeMusicIndex = _state.activeMusicIndex;
+
+      if (playMode === 'repeat') {
+        this._playMusic(activeMusicIndex);
+      } else if (playMode === 'loop') {
+        var total = this.props.playlist.length;
+        var index = activeMusicIndex > 0 ? activeMusicIndex - 1 : total - 1;
+        this._playMusic(index);
+      } else if (playMode === 'random') {
+        var randomIndex = Math.floor(Math.random() * this.props.playlist.length);
+        while (randomIndex === activeMusicIndex) {
+          randomIndex = Math.floor(Math.random() * this.props.playlist.length);
+        }
+        this._playMusic(randomIndex);
+      } else {
+        this.setState({ play: false });
+      }
     }
   }, {
     key: 'handleNext',
     value: function handleNext() {
-      var total = this.props.playlist.length;
-      var activeMusicIndex = this.state.activeMusicIndex < total - 1 ? this.state.activeMusicIndex + 1 : 0;
-      this._playMusic(activeMusicIndex);
+      var _state2 = this.state,
+          playMode = _state2.playMode,
+          activeMusicIndex = _state2.activeMusicIndex;
+
+      if (playMode === 'repeat') {
+        this._playMusic(activeMusicIndex);
+      } else if (playMode === 'loop') {
+        var total = this.props.playlist.length;
+        var index = activeMusicIndex < total - 1 ? activeMusicIndex + 1 : 0;
+        this._playMusic(index);
+      } else if (playMode === 'random') {
+        var randomIndex = Math.floor(Math.random() * this.props.playlist.length);
+        while (randomIndex === activeMusicIndex) {
+          randomIndex = Math.floor(Math.random() * this.props.playlist.length);
+        }
+        this._playMusic(randomIndex);
+      } else {
+        this.setState({ play: false });
+      }
     }
   }, {
     key: 'handleChangePlayMode',
@@ -141,6 +157,7 @@ var MusicPlayer = function (_Component) {
         play: true,
         progress: 0
       }, function () {
+        _this3.audioContainer.currentTime = 0;
         _this3.audioContainer.play();
       });
     }
@@ -164,12 +181,18 @@ var MusicPlayer = function (_Component) {
     value: function render() {
       var _this4 = this;
 
-      var _state2 = this.state,
-          activeMusicIndex = _state2.activeMusicIndex,
-          playMode = _state2.playMode;
+      var _props = this.props,
+          progressColor = _props.progressColor,
+          btnColor = _props.btnColor,
+          playlist = _props.playlist;
+      var _state3 = this.state,
+          activeMusicIndex = _state3.activeMusicIndex,
+          playMode = _state3.playMode;
 
-      var activeMusic = this.props.playlist[activeMusicIndex];
+      var activeMusic = playlist[activeMusicIndex];
       var playModeClass = playMode === 'loop' ? 'refresh' : playMode === 'random' ? 'random' : 'repeat';
+      var btnStyle = { color: btnColor };
+      var progressStyle = { width: this.state.progress * 100 + '%', backgroundColor: progressColor };
 
       return React.createElement(
         'div',
@@ -242,7 +265,7 @@ var MusicPlayer = function (_Component) {
                 _this4.progressContainer = _ref3;
               }
             },
-            React.createElement('div', { className: 'progress', style: { width: this.state.progress * 100 + '%', background: this.props.themeColor } })
+            React.createElement('div', { className: 'progress', style: progressStyle })
           ),
           React.createElement(
             'div',
@@ -250,14 +273,14 @@ var MusicPlayer = function (_Component) {
             React.createElement(
               'div',
               { className: 'mode-control' },
-              React.createElement('i', { className: 'icon fa fa-' + playModeClass, onClick: this.handleChangePlayMode.bind(this) })
+              React.createElement('i', { className: 'icon fa fa-' + playModeClass, style: btnStyle, onClick: this.handleChangePlayMode.bind(this) })
             ),
             React.createElement(
               'div',
               { className: 'controls' },
-              React.createElement('i', { className: 'icon fa fa-step-backward', onClick: this.handlePrev.bind(this) }),
-              React.createElement('i', { className: 'icon fa fa-' + (this.state.play ? 'pause' : 'play'), onClick: this.handleToggle.bind(this) }),
-              React.createElement('i', { className: 'icon fa fa-step-forward', onClick: this.handleNext.bind(this) })
+              React.createElement('i', { className: 'icon fa fa-step-backward', style: btnStyle, onClick: this.handlePrev.bind(this) }),
+              React.createElement('i', { className: 'icon fa fa-' + (this.state.play ? 'pause' : 'play'), style: btnStyle, onClick: this.handleToggle.bind(this) }),
+              React.createElement('i', { className: 'icon fa fa-step-forward', style: btnStyle, onClick: this.handleNext.bind(this) })
             )
           )
         ),
@@ -275,15 +298,17 @@ var MusicPlayer = function (_Component) {
 
 MusicPlayer.propTypes = {
   autoplay: PropTypes.bool,
+  progressColor: PropTypes.string,
+  btnColor: PropTypes.string,
   playlist: PropTypes.array.isRequired,
-  style: PropTypes.object,
-  themeColor: PropTypes.string
+  style: PropTypes.object
 };
 MusicPlayer.defaultProps = {
   autoplay: false,
+  progressColor: '#66cccc',
+  btnColor: '#4a4a4a',
   playlist: [],
-  style: {},
-  themeColor: '#66cccc'
+  style: {}
 };
 
 
