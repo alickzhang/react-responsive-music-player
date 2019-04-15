@@ -9,15 +9,15 @@ Please see a [demo](http://alickzhang.github.io/react-responsive-music-player/).
 
 ## Install
 
-``` bash
+```bash
 npm install react-responsive-music-player --save
 ```
 
 ## Usage
 
-``` jsx
-import React, { Component } from 'react'
-import MusicPlayer from 'react-responsive-music-player'
+```jsx
+import React, { Component } from 'react';
+import MusicPlayer from 'react-responsive-music-player';
 
 class App extends Component {
   render() {
@@ -27,7 +27,7 @@ class App extends Component {
         <MusicPlayer playlist={playlist} />
         ...
       </div>
-    )
+    );
   }
 }
 ```
@@ -36,13 +36,13 @@ class App extends Component {
 
 ### props
 
-prop          | type   | default | notes
---------------|--------|---------|--------
-autoplay      | bool   | false   |
-progressColor | string | #66cccc | the color of the progress
-btnColor      | string | #4a4a4a | the color of the buttons
-playlist      | array  | []      | the playlist
-style         | object | {}      |
+| prop          | type   | default | notes                     |
+| ------------- | ------ | ------- | ------------------------- |
+| autoplay      | bool   | false   |
+| progressColor | string | #66cccc | the color of the progress |
+| btnColor      | string | #4a4a4a | the color of the buttons  |
+| playlist      | array  | []      | the playlist              |
+| style         | object | {}      |
 
 ### JSON
 
@@ -70,7 +70,7 @@ const playlist = [
 
 ## Development
 
-``` bash
+```bash
 npm install
 npm start
 ```
@@ -79,4 +79,4 @@ npm start
 
 MIT License
 
-Copyright (c) 2017 Shixiang Zhang
+Copyright (c) 2019 Shixiang Zhang

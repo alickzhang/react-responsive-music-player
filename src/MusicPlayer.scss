@@ -3,7 +3,7 @@
 
 $font-weight: 400 !default;
 $font-size-lg: 1.5em !default;
-$font-size-md: 1.0em !default;
+$font-size-md: 1em !default;
 $font-size-sm: 0.8em !default;
 
 $player-info-width-lg: 430px;
@@ -25,7 +25,8 @@ $player-cover-width: 240px !default;
 $player-cover-height: $player-cover-width;
 
 * {
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,PingFang SC,Source Han Sans CN,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, PingFang SC, Source Han Sans CN,
+    Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -60,7 +61,8 @@ $player-cover-height: $player-cover-width;
     .music-info {
       text-align: center;
 
-      .title, .artist {
+      .title,
+      .artist {
         font-weight: $font-weight;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -104,7 +106,7 @@ $player-cover-height: $player-cover-width;
           width: $player-volume-width;
           padding-left: 2px;
           opacity: 0;
-          transition: opacity .5s linear;
+          transition: opacity 0.5s linear;
 
           .progress-container {
             height: $player-volume-height;
@@ -173,7 +175,6 @@ $player-cover-height: $player-cover-width;
 
 @media (min-width: 576px) {
   .player-container {
-
     .info-and-control {
       width: $player-info-width-md;
 
@@ -217,7 +218,6 @@ $player-cover-height: $player-cover-width;
 
 @media (min-width: 768px) {
   .player-container {
-
     .info-and-control {
       width: $player-info-width-lg;
     }
