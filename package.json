@@ -21,34 +21,50 @@
     "url": "https://github.com/alickzhang/react-responsive-music-player/issues"
   },
   "dependencies": {
-    "autoprefixer": "^8.6.2",
+    "autoprefixer": "^9.5.1",
     "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.1",
-    "cssnano": "^3.10.0",
+    "babel-preset-react-app": "^7.0.2",
+    "classnames": "^2.2.6",
+    "cssnano": "^4.1.10",
     "font-awesome": "^4.7.0",
-    "gh-pages": "^1.2.0",
-    "node-sass-chokidar": "^1.3.0",
-    "normalize.css": "^8.0.0",
-    "npm-run-all": "^4.1.2",
-    "postcss-cli": "^5.0.0",
-    "prop-types": "^15.5.10",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-scripts": "^1.1.4"
+    "gh-pages": "^2.0.1",
+    "node-sass": "^4.11.0",
+    "normalize.css": "^8.0.1",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^6.1.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^2.1.8"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.11.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "prettier": "^1.16.4",
+    "stylelint": "^9.10.1",
+    "stylelint-config-recommended-scss": "^3.2.0",
+    "stylelint-scss": "^3.5.4"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
-    "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js",
-    "test": "react-scripts test --env=jsdom",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eslint": "./node_modules/.bin/eslint --quiet ./src/",
     "eject": "react-scripts eject",
     "compile": "npm run build-css && npm run compile:js && npm run compile:css",
     "compile:js": "rimraf dist && NODE_ENV=production babel src/ -d dist/ --presets react-app --ignore src/index.js",
-    "compile:css": "postcss --use autoprefixer --use cssnano -o dist/MusicPlayer.css src/MusicPlayer.css"
-  }
+    "compile:css": "postcss --use autoprefixer --use cssnano -o dist/MusicPlayer.css src/MusicPlayer.css",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
