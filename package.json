@@ -30,7 +30,6 @@
     "gh-pages": "^2.0.1",
     "node-sass": "^4.11.0",
     "normalize.css": "^8.0.1",
-    "npm-run-all": "^4.1.5",
     "postcss-cli": "^6.1.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Progress from './components/Progress';
 import './MusicPlayer.scss';
 
 const formatTime = time => {
@@ -51,8 +52,6 @@ export default class MusicPlayer extends Component {
     };
     this.modeList = ['loop', 'random', 'repeat'];
     this.audioContainer = React.createRef();
-    this.volumeContainer = React.createRef();
-    this.progressContainer = React.createRef();
   }
 
   componentDidMount() {
@@ -75,20 +74,14 @@ export default class MusicPlayer extends Component {
     this.handleNext();
   };
 
-  handleAdjustProgress = e => {
-    const progress =
-      (e.clientX - this.progressContainer.current.getBoundingClientRect().left) /
-      this.progressContainer.current.clientWidth;
-    const currentTime = this.audioContainer.current.duration * progress;
+  handleAdjustProgress = value => {
+    const currentTime = this.audioContainer.current.duration * value;
     this.audioContainer.current.currentTime = currentTime;
-    this.setState({ play: true, progress }, () => this.audioContainer.current.play());
+    this.setState({ play: true, progress: value }, () => this.audioContainer.current.play());
   };
 
-  handleAdjustVolume = e => {
-    let volume =
-      (e.clientX - this.volumeContainer.current.getBoundingClientRect().left) /
-      this.volumeContainer.current.clientWidth;
-    volume = volume < 0 ? 0 : volume;
+  handleAdjustVolume = value => {
+    const volume = value < 0 ? 0 : value;
     this.audioContainer.current.volume = volume;
     this.setState({ volume });
   };
@@ -164,11 +157,12 @@ export default class MusicPlayer extends Component {
     const activeMusic = playlist[activeMusicIndex];
     const playModeClass = playMode === 'loop' ? 'refresh' : playMode === 'random' ? 'random' : 'repeat';
     const btnStyle = { color: btnColor };
-    const progressStyle = { width: `${progress * 100}%`, backgroundColor: progressColor };
 
     return (
       <div className={classNames('player-container', { mode })} style={style}>
-        <audio autoPlay={play} preload="auto" ref={this.audioContainer} src={activeMusic.url} />
+        <audio autoPlay={play} preload="auto" ref={this.audioContainer} src={activeMusic.url}>
+          <track kind="captions" />
+        </audio>
         <div className="info-and-control">
           <div className="music-info">
             <h2 className="title">{activeMusic.title}</h2>
@@ -181,15 +175,11 @@ export default class MusicPlayer extends Component {
                 <i className="icon fa fa-volume-up" />
               </div>
               <div className="volume-wrapper">
-                <div className="progress-container" onClick={this.handleAdjustVolume} ref={this.volumeContainer}>
-                  <div className="progress" style={{ width: `${volume * 100}%` }} />
-                </div>
+                <Progress percent={volume} onClick={this.handleAdjustVolume} />
               </div>
             </div>
           </div>
-          <div className="progress-container" onClick={this.handleAdjustProgress} ref={this.progressContainer}>
-            <div className="progress" style={progressStyle} />
-          </div>
+          <Progress percent={progress} strokeColor={progressColor} onClick={this.handleAdjustProgress} />
           <div className="control-container">
             <div className="mode-control">
               <i className={`icon fa fa-${playModeClass}`} style={btnStyle} onClick={this.handleChangePlayMode} />
