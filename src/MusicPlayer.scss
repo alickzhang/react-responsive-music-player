@@ -15,10 +15,6 @@ $player-title-color: #030303 !default;
 $player-artist-color: #4a4a4a !default;
 $player-time-color: #9b9b9b !default;
 $player-volume-width: 50px !default;
-$player-volume-height: 2px !default;
-$player-volume-bg-color: #e5e5e5 !default;
-$player-progress-bg-color: #dadada !default;
-$player-progress-height: 1px !default;
 $player-control-width: 240px !default;
 $player-control-font-size: 1.8em !default;
 $player-cover-width: 240px !default;
@@ -107,33 +103,11 @@ $player-cover-height: $player-cover-width;
           padding-left: 2px;
           opacity: 0;
           transition: opacity 0.5s linear;
-
-          .progress-container {
-            height: $player-volume-height;
-            margin-top: calc(0.8em - 1px);
-            background-color: $player-volume-bg-color;
-
-            .progress {
-              height: $player-volume-height;
-              background-color: $player-time-color;
-            }
-          }
         }
 
         &:hover .volume-wrapper {
           opacity: 1;
         }
-      }
-    }
-
-    .progress-container {
-      width: 100%;
-      height: 3px;
-      background-color: $player-progress-bg-color;
-      cursor: pointer;
-
-      .progress {
-        height: 100%;
       }
     }
 
@@ -185,14 +159,7 @@ $player-cover-height: $player-cover-width;
       .time-and-volume {
         .volume-container {
           display: flex;
-        }
-      }
-
-      .progress-container {
-        height: $player-progress-height;
-
-        .progress {
-          height: 100%;
+          align-items: center;
         }
       }
 
