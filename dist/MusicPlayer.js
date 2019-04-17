@@ -1,315 +1,356 @@
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _classnames = _interopRequireDefault(require("classnames"));
+
+var _Progress = _interopRequireDefault(require("./components/Progress"));
+
+require("./MusicPlayer.scss");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import './MusicPlayer.css';
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-var MusicPlayer = function (_Component) {
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var formatTime = function formatTime(time) {
+  /* eslint no-restricted-globals: off */
+  if (isNaN(time) || time === 0) {
+    return '';
+  }
+
+  var mins = Math.floor(time / 60);
+  var secs = (time % 60).toFixed();
+  return "".concat(mins < 10 ? '0' : '').concat(mins, ":").concat(secs < 10 ? '0' : '').concat(secs);
+};
+
+var processArtistName = function processArtistName(artistList) {
+  return artistList.join(' / ');
+};
+
+var getPlayModeClass = function getPlayModeClass(playMode) {
+  if (playMode === 'loop') return 'refresh';
+  if (playMode === 'random') return 'random';
+  return 'repeat';
+};
+
+var MusicPlayer =
+/*#__PURE__*/
+function (_Component) {
   _inherits(MusicPlayer, _Component);
 
   function MusicPlayer(props) {
+    var _this;
+
     _classCallCheck(this, MusicPlayer);
 
-    var _this = _possibleConstructorReturn(this, (MusicPlayer.__proto__ || Object.getPrototypeOf(MusicPlayer)).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MusicPlayer).call(this, props));
 
-    _this.state = {
-      activeMusicIndex: 0,
-      leftTime: 0,
-      play: _this.props.autoplay || false,
-      playMode: 'loop',
-      progress: 0,
-      volume: 1
-    };
-    _this.modeList = ['loop', 'random', 'repeat'];
-    return _this;
-  }
+    _defineProperty(_assertThisInitialized(_this), "updateProgress", function () {
+      var _this$audioContainer$ = _this.audioContainer.current,
+          duration = _this$audioContainer$.duration,
+          currentTime = _this$audioContainer$.currentTime;
+      var progress = currentTime / duration || 0;
 
-  _createClass(MusicPlayer, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var audioContainer = this.audioContainer;
-      audioContainer.addEventListener('timeupdate', this.updateProgress.bind(this));
-      audioContainer.addEventListener('ended', this.end.bind(this));
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      var audioContainer = this.audioContainer;
-      audioContainer.removeEventListener('timeupdate', this.updateProgress.bind(this));
-      audioContainer.removeEventListener('ended', this.end.bind(this));
-    }
-  }, {
-    key: 'updateProgress',
-    value: function updateProgress() {
-      var duration = this.audioContainer.duration;
-      var currentTime = this.audioContainer.currentTime;
-      var progress = currentTime / duration;
-      this.setState({
+      _this.setState({
         progress: progress,
         leftTime: duration - currentTime
       });
-    }
-  }, {
-    key: 'end',
-    value: function end() {
-      this.handleNext();
-    }
-  }, {
-    key: 'handleAdjustProgress',
-    value: function handleAdjustProgress(e) {
-      var _this2 = this;
+    });
 
-      var progressContainer = this.progressContainer;
-      var progress = (e.clientX - progressContainer.getBoundingClientRect().left) / progressContainer.clientWidth;
-      var currentTime = this.audioContainer.duration * progress;
-      this.audioContainer.currentTime = currentTime;
-      this.setState({
+    _defineProperty(_assertThisInitialized(_this), "end", function () {
+      _this.handleNext();
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleAdjustProgress", function (value) {
+      var currentTime = _this.audioContainer.current.duration * value;
+      _this.audioContainer.current.currentTime = currentTime;
+
+      _this.setState({
         play: true,
-        progress: progress
+        progress: value
       }, function () {
-        _this2.audioContainer.play();
+        return _this.audioContainer.current.play();
       });
-    }
-  }, {
-    key: 'handleAdjustVolume',
-    value: function handleAdjustVolume(e) {
-      var volumeContainer = this.volumeContainer;
-      var volume = (e.clientX - volumeContainer.getBoundingClientRect().left) / volumeContainer.clientWidth;
-      volume = volume < 0 ? 0 : volume;
-      this.audioContainer.volume = volume;
-      this.setState({
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleAdjustVolume", function (value) {
+      var volume = value < 0 ? 0 : value;
+      _this.audioContainer.current.volume = volume;
+
+      _this.setState({
         volume: volume
       });
-    }
-  }, {
-    key: 'handleToggle',
-    value: function handleToggle() {
-      this.state.play ? this.audioContainer.pause() : this.audioContainer.play();
-      this.setState({ play: !this.state.play });
-    }
-  }, {
-    key: 'handlePrev',
-    value: function handlePrev() {
-      var _state = this.state,
-          playMode = _state.playMode,
-          activeMusicIndex = _state.activeMusicIndex;
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleToggle", function () {
+      var play = _this.state.play;
+
+      if (play) {
+        _this.audioContainer.current.pause();
+      } else {
+        _this.audioContainer.current.play();
+      }
+
+      _this.setState(function (_ref) {
+        var play = _ref.play;
+        return {
+          play: !play
+        };
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handlePrev", function () {
+      var playlist = _this.props.playlist;
+      var _this$state = _this.state,
+          playMode = _this$state.playMode,
+          activeMusicIndex = _this$state.activeMusicIndex;
 
       if (playMode === 'repeat') {
-        this._playMusic(activeMusicIndex);
+        _this.playMusic(activeMusicIndex);
       } else if (playMode === 'loop') {
-        var total = this.props.playlist.length;
+        var total = playlist.length;
         var index = activeMusicIndex > 0 ? activeMusicIndex - 1 : total - 1;
-        this._playMusic(index);
+
+        _this.playMusic(index);
       } else if (playMode === 'random') {
-        var randomIndex = Math.floor(Math.random() * this.props.playlist.length);
+        var randomIndex = Math.floor(Math.random() * playlist.length);
+
         while (randomIndex === activeMusicIndex) {
-          randomIndex = Math.floor(Math.random() * this.props.playlist.length);
+          randomIndex = Math.floor(Math.random() * playlist.length);
         }
-        this._playMusic(randomIndex);
+
+        _this.playMusic(randomIndex);
       } else {
-        this.setState({ play: false });
+        _this.setState({
+          play: false
+        });
       }
-    }
-  }, {
-    key: 'handleNext',
-    value: function handleNext() {
-      var _state2 = this.state,
-          playMode = _state2.playMode,
-          activeMusicIndex = _state2.activeMusicIndex;
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleNext", function () {
+      var playlist = _this.props.playlist;
+      var _this$state2 = _this.state,
+          playMode = _this$state2.playMode,
+          activeMusicIndex = _this$state2.activeMusicIndex;
 
       if (playMode === 'repeat') {
-        this._playMusic(activeMusicIndex);
+        _this.playMusic(activeMusicIndex);
       } else if (playMode === 'loop') {
-        var total = this.props.playlist.length;
+        var total = playlist.length;
         var index = activeMusicIndex < total - 1 ? activeMusicIndex + 1 : 0;
-        this._playMusic(index);
-      } else if (playMode === 'random') {
-        var randomIndex = Math.floor(Math.random() * this.props.playlist.length);
-        while (randomIndex === activeMusicIndex) {
-          randomIndex = Math.floor(Math.random() * this.props.playlist.length);
-        }
-        this._playMusic(randomIndex);
-      } else {
-        this.setState({ play: false });
-      }
-    }
-  }, {
-    key: 'handleChangePlayMode',
-    value: function handleChangePlayMode() {
-      var index = this.modeList.indexOf(this.state.playMode);
-      index = (index + 1) % this.modeList.length;
-      this.setState({ playMode: this.modeList[index] });
-    }
-  }, {
-    key: '_playMusic',
-    value: function _playMusic(index) {
-      var _this3 = this;
 
-      this.setState({
+        _this.playMusic(index);
+      } else if (playMode === 'random') {
+        var randomIndex = Math.floor(Math.random() * playlist.length);
+
+        while (randomIndex === activeMusicIndex) {
+          randomIndex = Math.floor(Math.random() * playlist.length);
+        }
+
+        _this.playMusic(randomIndex);
+      } else {
+        _this.setState({
+          play: false
+        });
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleChangePlayMode", function () {
+      var playMode = _this.state.playMode;
+
+      var index = _this.modeList.indexOf(playMode);
+
+      index = (index + 1) % _this.modeList.length;
+
+      _this.setState({
+        playMode: _this.modeList[index]
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "playMusic", function (index) {
+      _this.setState({
         activeMusicIndex: index,
         leftTime: 0,
         play: true,
         progress: 0
       }, function () {
-        _this3.audioContainer.currentTime = 0;
-        _this3.audioContainer.play();
+        _this.audioContainer.current.currentTime = 0;
+
+        _this.audioContainer.current.play();
       });
+    });
+
+    _this.state = {
+      activeMusicIndex: 0,
+      leftTime: 0,
+      play: props.autoplay || false,
+      playMode: 'loop',
+      progress: 0,
+      volume: 1
+    };
+    _this.modeList = ['loop', 'random', 'repeat'];
+    _this.audioContainer = _react.default.createRef();
+    return _this;
+  }
+
+  _createClass(MusicPlayer, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.audioContainer.current.addEventListener('timeupdate', this.updateProgress);
+      this.audioContainer.current.addEventListener('ended', this.end);
     }
   }, {
-    key: '_formatTime',
-    value: function _formatTime(time) {
-      if (isNaN(time) || time === 0) {
-        return;
-      }
-      var mins = Math.floor(time / 60);
-      var secs = (time % 60).toFixed();
-      return '' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.audioContainer.current.removeEventListener('timeupdate', this.updateProgress);
+      this.audioContainer.current.removeEventListener('ended', this.end);
     }
   }, {
-    key: '_processArtistName',
-    value: function _processArtistName(artistList) {
-      return artistList.join(' / ');
-    }
-  }, {
-    key: 'render',
+    key: "render",
     value: function render() {
-      var _this4 = this;
-
-      var _props = this.props,
-          progressColor = _props.progressColor,
-          btnColor = _props.btnColor,
-          playlist = _props.playlist;
-      var _state3 = this.state,
-          activeMusicIndex = _state3.activeMusicIndex,
-          playMode = _state3.playMode;
-
+      var _this$props = this.props,
+          playlist = _this$props.playlist,
+          mode = _this$props.mode,
+          width = _this$props.width,
+          progressColor = _this$props.progressColor,
+          btnColor = _this$props.btnColor,
+          style = _this$props.style;
+      var _this$state3 = this.state,
+          play = _this$state3.play,
+          progress = _this$state3.progress,
+          leftTime = _this$state3.leftTime,
+          volume = _this$state3.volume,
+          activeMusicIndex = _this$state3.activeMusicIndex,
+          playMode = _this$state3.playMode;
       var activeMusic = playlist[activeMusicIndex];
-      var playModeClass = playMode === 'loop' ? 'refresh' : playMode === 'random' ? 'random' : 'repeat';
-      var btnStyle = { color: btnColor };
-      var progressStyle = { width: this.state.progress * 100 + '%', backgroundColor: progressColor };
-
-      return React.createElement(
-        'div',
-        { className: 'player-container', style: this.props.style },
-        React.createElement('audio', {
-          autoPlay: this.state.play,
-          preload: 'auto',
-          ref: function ref(_ref) {
-            _this4.audioContainer = _ref;
-          },
-          src: activeMusic.url
+      var playModeClass = getPlayModeClass(playMode);
+      var btnStyle = {
+        color: btnColor
+      };
+      return _react.default.createElement("div", {
+        className: (0, _classnames.default)('player', {
+          vertical: mode === 'vertical'
         }),
-        React.createElement(
-          'div',
-          { className: 'info-and-control' },
-          React.createElement(
-            'div',
-            { className: 'music-info' },
-            React.createElement(
-              'h2',
-              { className: 'title' },
-              activeMusic.title
-            ),
-            React.createElement(
-              'h3',
-              { className: 'artist' },
-              this._processArtistName(activeMusic.artist)
-            )
-          ),
-          React.createElement(
-            'div',
-            { className: 'time-and-volume' },
-            React.createElement(
-              'div',
-              { className: 'left-time' },
-              '-',
-              this._formatTime(this.state.leftTime)
-            ),
-            React.createElement(
-              'div',
-              { className: 'volume-container' },
-              React.createElement(
-                'div',
-                { className: 'volume-icon' },
-                React.createElement('i', { className: 'icon fa fa-volume-up' })
-              ),
-              React.createElement(
-                'div',
-                { className: 'volume-wrapper' },
-                React.createElement(
-                  'div',
-                  {
-                    className: 'progress-container',
-                    onClick: this.handleAdjustVolume.bind(this),
-                    ref: function ref(_ref2) {
-                      _this4.volumeContainer = _ref2;
-                    }
-                  },
-                  React.createElement('div', { className: 'progress', style: { width: this.state.volume * 100 + '%' } })
-                )
-              )
-            )
-          ),
-          React.createElement(
-            'div',
-            {
-              className: 'progress-container',
-              onClick: this.handleAdjustProgress.bind(this),
-              ref: function ref(_ref3) {
-                _this4.progressContainer = _ref3;
-              }
-            },
-            React.createElement('div', { className: 'progress', style: progressStyle })
-          ),
-          React.createElement(
-            'div',
-            { className: 'control-container' },
-            React.createElement(
-              'div',
-              { className: 'mode-control' },
-              React.createElement('i', { className: 'icon fa fa-' + playModeClass, style: btnStyle, onClick: this.handleChangePlayMode.bind(this) })
-            ),
-            React.createElement(
-              'div',
-              { className: 'controls' },
-              React.createElement('i', { className: 'icon fa fa-step-backward', style: btnStyle, onClick: this.handlePrev.bind(this) }),
-              React.createElement('i', { className: 'icon fa fa-' + (this.state.play ? 'pause' : 'play'), style: btnStyle, onClick: this.handleToggle.bind(this) }),
-              React.createElement('i', { className: 'icon fa fa-step-forward', style: btnStyle, onClick: this.handleNext.bind(this) })
-            )
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: 'cover-container' },
-          React.createElement('div', { className: 'cover', style: { backgroundImage: 'url(' + activeMusic.cover + ')' } })
-        )
-      );
+        style: _objectSpread({}, style, {
+          width: typeof width === 'string' ? width : "".concat(width, "px")
+        })
+      }, _react.default.createElement("audio", {
+        autoPlay: play,
+        preload: "auto",
+        ref: this.audioContainer,
+        src: activeMusic.url
+      }, _react.default.createElement("track", {
+        kind: "captions"
+      })), _react.default.createElement("div", {
+        className: "player-control"
+      }, _react.default.createElement("div", {
+        className: "music-info"
+      }, _react.default.createElement("h2", {
+        className: "title"
+      }, activeMusic.title), _react.default.createElement("h3", {
+        className: "artist"
+      }, processArtistName(activeMusic.artist))), _react.default.createElement("div", {
+        className: "time-and-volume"
+      }, _react.default.createElement("div", {
+        className: "time-remaining"
+      }, "-", formatTime(leftTime)), _react.default.createElement("div", {
+        className: "volume-control"
+      }, _react.default.createElement("i", {
+        className: "volume-icon fa fa-volume-up"
+      }), _react.default.createElement("div", {
+        className: "volume-bar"
+      }, _react.default.createElement(_Progress.default, {
+        percent: volume,
+        onClick: this.handleAdjustVolume
+      })))), _react.default.createElement(_Progress.default, {
+        percent: progress,
+        strokeColor: progressColor,
+        onClick: this.handleAdjustProgress
+      }), _react.default.createElement("div", {
+        className: "controls"
+      }, _react.default.createElement("button", {
+        type: "button",
+        className: "fa fa-".concat(playModeClass),
+        style: btnStyle,
+        onClick: this.handleChangePlayMode
+      }), _react.default.createElement("button", {
+        type: "button",
+        className: "fa fa-step-backward",
+        style: btnStyle,
+        onClick: this.handlePrev
+      }), _react.default.createElement("button", {
+        type: "button",
+        className: "fa fa-".concat(play ? 'pause' : 'play'),
+        style: btnStyle,
+        onClick: this.handleToggle
+      }), _react.default.createElement("button", {
+        type: "button",
+        className: "fa fa-step-forward",
+        style: btnStyle,
+        onClick: this.handleNext
+      }))), _react.default.createElement("div", {
+        className: "player-cover",
+        style: {
+          backgroundImage: "url(".concat(activeMusic.cover, ")")
+        }
+      }));
     }
   }]);
 
   return MusicPlayer;
-}(Component);
+}(_react.Component);
 
-MusicPlayer.propTypes = {
-  autoplay: PropTypes.bool,
-  progressColor: PropTypes.string,
-  btnColor: PropTypes.string,
-  playlist: PropTypes.array.isRequired,
-  style: PropTypes.object
-};
-MusicPlayer.defaultProps = {
+exports.default = MusicPlayer;
+
+_defineProperty(MusicPlayer, "propTypes", {
+  playlist: _propTypes.default.arrayOf(_propTypes.default.shape({
+    url: _propTypes.default.string,
+    cover: _propTypes.default.string,
+    title: _propTypes.default.string,
+    artist: _propTypes.default.arrayOf(_propTypes.default.string)
+  })).isRequired,
+  mode: _propTypes.default.oneOf(['horizontal', 'vertical']),
+  width: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.string]),
+  autoplay: _propTypes.default.bool,
+  progressColor: _propTypes.default.string,
+  btnColor: _propTypes.default.string,
+  style: _propTypes.default.object
+});
+
+_defineProperty(MusicPlayer, "defaultProps", {
+  mode: 'horizontal',
+  width: '100%',
   autoplay: false,
   progressColor: '#66cccc',
   btnColor: '#4a4a4a',
-  playlist: [],
   style: {}
-};
-
-
-export default MusicPlayer;
+});
