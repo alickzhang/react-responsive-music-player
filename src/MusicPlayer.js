@@ -5,6 +5,7 @@ import Progress from './components/Progress';
 import './MusicPlayer.scss';
 
 const formatTime = time => {
+  /* eslint no-restricted-globals: off */
   if (isNaN(time) || time === 0) {
     return '';
   }
@@ -14,6 +15,12 @@ const formatTime = time => {
 };
 
 const processArtistName = artistList => artistList.join(' / ');
+
+const getPlayModeClass = playMode => {
+  if (playMode === 'loop') return 'refresh';
+  if (playMode === 'random') return 'random';
+  return 'repeat';
+};
 
 export default class MusicPlayer extends Component {
   static propTypes = {
@@ -26,6 +33,7 @@ export default class MusicPlayer extends Component {
       })
     ).isRequired,
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     autoplay: PropTypes.bool,
     progressColor: PropTypes.string,
     btnColor: PropTypes.string,
@@ -34,6 +42,7 @@ export default class MusicPlayer extends Component {
 
   static defaultProps = {
     mode: 'horizontal',
+    width: '100%',
     autoplay: false,
     progressColor: '#66cccc',
     btnColor: '#4a4a4a',
@@ -66,7 +75,7 @@ export default class MusicPlayer extends Component {
 
   updateProgress = () => {
     const { duration, currentTime } = this.audioContainer.current;
-    const progress = currentTime / duration;
+    const progress = currentTime / duration || 0;
     this.setState({ progress, leftTime: duration - currentTime });
   };
 
@@ -151,49 +160,53 @@ export default class MusicPlayer extends Component {
   };
 
   render() {
-    const { mode, progressColor, btnColor, playlist, style } = this.props;
-    const { play, progress, leftTime, volume } = this.state;
-    const { activeMusicIndex, playMode } = this.state;
+    const { playlist, mode, width, progressColor, btnColor, style } = this.props;
+    const { play, progress, leftTime, volume, activeMusicIndex, playMode } = this.state;
     const activeMusic = playlist[activeMusicIndex];
-    const playModeClass = playMode === 'loop' ? 'refresh' : playMode === 'random' ? 'random' : 'repeat';
+    const playModeClass = getPlayModeClass(playMode);
     const btnStyle = { color: btnColor };
 
     return (
-      <div className={classNames('player-container', { mode })} style={style}>
+      <div
+        className={classNames('player', { vertical: mode === 'vertical' })}
+        style={{ ...style, width: typeof width === 'string' ? width : `${width}px` }}
+      >
         <audio autoPlay={play} preload="auto" ref={this.audioContainer} src={activeMusic.url}>
           <track kind="captions" />
         </audio>
-        <div className="info-and-control">
+        <div className="player-control">
           <div className="music-info">
             <h2 className="title">{activeMusic.title}</h2>
             <h3 className="artist">{processArtistName(activeMusic.artist)}</h3>
           </div>
           <div className="time-and-volume">
-            <div className="left-time">-{formatTime(leftTime)}</div>
-            <div className="volume-container">
-              <div className="volume-icon">
-                <i className="icon fa fa-volume-up" />
-              </div>
-              <div className="volume-wrapper">
+            <div className="time-remaining">-{formatTime(leftTime)}</div>
+            <div className="volume-control">
+              <i className="volume-icon fa fa-volume-up" />
+              <div className="volume-bar">
                 <Progress percent={volume} onClick={this.handleAdjustVolume} />
               </div>
             </div>
           </div>
           <Progress percent={progress} strokeColor={progressColor} onClick={this.handleAdjustProgress} />
-          <div className="control-container">
-            <div className="mode-control">
-              <i className={`icon fa fa-${playModeClass}`} style={btnStyle} onClick={this.handleChangePlayMode} />
-            </div>
-            <div className="controls">
-              <i className="icon fa fa-step-backward" style={btnStyle} onClick={this.handlePrev} />
-              <i className={`icon fa fa-${play ? 'pause' : 'play'}`} style={btnStyle} onClick={this.handleToggle} />
-              <i className="icon fa fa-step-forward" style={btnStyle} onClick={this.handleNext} />
-            </div>
+          <div className="controls">
+            <button
+              type="button"
+              className={`fa fa-${playModeClass}`}
+              style={btnStyle}
+              onClick={this.handleChangePlayMode}
+            />
+            <button type="button" className="fa fa-step-backward" style={btnStyle} onClick={this.handlePrev} />
+            <button
+              type="button"
+              className={`fa fa-${play ? 'pause' : 'play'}`}
+              style={btnStyle}
+              onClick={this.handleToggle}
+            />
+            <button type="button" className="fa fa-step-forward" style={btnStyle} onClick={this.handleNext} />
           </div>
         </div>
-        <div className="cover-container">
-          <div className="cover" style={{ backgroundImage: `url(${activeMusic.cover})` }} />
-        </div>
+        <div className="player-cover" style={{ backgroundImage: `url(${activeMusic.cover})` }} />
       </div>
     );
   }
