@@ -40,14 +40,14 @@ class App extends Component {
 
 ### props
 
-| prop          | type           | default    | notes                     |
-| ------------- | -------------- | ---------- | ------------------------- |
-| mode          | string         | horizontal |
+| prop          | type           | default    | notes                                            |
+| ------------- | -------------- | ---------- | ------------------------------------------------ |
+| mode          | string         | horizontal | set the layout of player: vertical or horizontal |
 | width         | number, string | 100%       |
 | autoplay      | bool           | false      |
-| progressColor | string         | #66cccc    | the color of the progress |
-| btnColor      | string         | #4a4a4a    | the color of the buttons  |
-| playlist      | array          | []         | the playlist              |
+| progressColor | string         | #66cccc    | the color of the progress                        |
+| btnColor      | string         | #4a4a4a    | the color of the buttons                         |
+| playlist      | array          | []         | the playlist                                     |
 | style         | object         | {}         |
 
 ### JSON
