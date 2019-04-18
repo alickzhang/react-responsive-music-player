@@ -1,4 +1,6 @@
-# .npmignore 
+build
+node_modules
+public
 src
 .eslintrc
 .stylelintrc
