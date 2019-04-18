@@ -13,6 +13,12 @@ Please see a [demo](http://alickzhang.github.io/react-responsive-music-player/).
 npm install react-responsive-music-player --save
 ```
 
+or
+
+```bash
+yarn add react-responsive-music-player
+```
+
 ## Usage
 
 ```jsx

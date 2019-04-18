@@ -22,6 +22,7 @@ $player-cover-size: 240px !default;
 }
 
 .player {
+  max-width: 800px;
   display: flex;
 
   .player-control {
